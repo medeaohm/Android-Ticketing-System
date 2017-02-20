@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" android:background="#34495e">
+
+    <TextView
+        android:id="@+id/l_appName"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/app_name"
+        android:textStyle="bold"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="50dp"/>
+    <TextView
+        android:id="@+id/l_appDescription"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/l_appName"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="20dp"/>
+    <EditText android:id="@+id/login_email"
+        android:background="#FFFFFF"
+        android:textColor="#000000"
+        android:padding="12dp"
+        android:hint="Email"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/l_appDescription"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:singleLine="false"
+        android:textColorHint="#42000000"
+        />
+    <EditText android:id="@+id/login_password"
+        android:background="#FFFFFF"
+        android:textColor="#000000"
+        android:padding="12dp"
+        android:hint="Password"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/login_email"
+        android:inputType="textPassword"
+        android:ems="10"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="1dp"
+        android:textColorHint="#42000000"
+        />
+    <Button android:id="@+id/btn_login"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/login_password"
+        android:text="Login"
+        android:background="#1bbc9b"
+        android:clickable="true"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="3dp"/>
+    <TextView
+        android:id="@+id/login_register"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/login_password"
+        android:gravity="center_horizontal"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="#FFFFFF"
+        android:textSize="16dp"
+        android:text="Don't have an account?"
+        android:layout_marginTop="120dp"/>
+    <TextView
+        android:id="@+id/login_footer"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="#FFFFFF"
+        android:gravity="center_horizontal"
+        android:text="© 2B || !2B - Android Team Project - Telerik Academy 2017"
+        />
+</RelativeLayout>
