@@ -1,0 +1,14 @@
+C:\Users\Adrian\Documents\GitHub\Angular2-Team-Project\RESTServer\TicketingSystem.Data\bin\Debug\TicketingSystem.Data.dll.config
+C:\Users\Adrian\Documents\GitHub\Angular2-Team-Project\RESTServer\TicketingSystem.Data\bin\Debug\TicketingSystem.Data.dll
+C:\Users\Adrian\Documents\GitHub\Angular2-Team-Project\RESTServer\TicketingSystem.Data\bin\Debug\TicketingSystem.Data.pdb
+C:\Users\Adrian\Documents\GitHub\Angular2-Team-Project\RESTServer\TicketingSystem.Data\bin\Debug\EntityFramework.dll
+C:\Users\Adrian\Documents\GitHub\Angular2-Team-Project\RESTServer\TicketingSystem.Data\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\Adrian\Documents\GitHub\Angular2-Team-Project\RESTServer\TicketingSystem.Data\bin\Debug\Microsoft.AspNet.Identity.Core.dll
+C:\Users\Adrian\Documents\GitHub\Angular2-Team-Project\RESTServer\TicketingSystem.Data\bin\Debug\Microsoft.AspNet.Identity.EntityFramework.dll
+C:\Users\Adrian\Documents\GitHub\Angular2-Team-Project\RESTServer\TicketingSystem.Data\bin\Debug\EntityFramework.xml
+C:\Users\Adrian\Documents\GitHub\Angular2-Team-Project\RESTServer\TicketingSystem.Data\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\Adrian\Documents\GitHub\Angular2-Team-Project\RESTServer\TicketingSystem.Data\bin\Debug\Microsoft.AspNet.Identity.Core.xml
+C:\Users\Adrian\Documents\GitHub\Angular2-Team-Project\RESTServer\TicketingSystem.Data\bin\Debug\Microsoft.AspNet.Identity.EntityFramework.xml
+C:\Users\Adrian\Documents\GitHub\Angular2-Team-Project\RESTServer\TicketingSystem.Data\obj\Debug\TicketingSystem.Data.csprojResolveAssemblyReference.cache
+C:\Users\Adrian\Documents\GitHub\Angular2-Team-Project\RESTServer\TicketingSystem.Data\obj\Debug\TicketingSystem.Data.dll
+C:\Users\Adrian\Documents\GitHub\Angular2-Team-Project\RESTServer\TicketingSystem.Data\obj\Debug\TicketingSystem.Data.pdb
