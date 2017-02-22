@@ -12,6 +12,7 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.Charset;
@@ -42,10 +43,13 @@ public class LoginAsync extends AsyncTask<String, Void, Boolean> {
             urlConnection.setDoInput(true);
             urlConnection.setDoOutput(true);
             urlConnection.setRequestMethod("POST");
-            urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            urlConnection.setRequestProperty("Content-Type", "application/json");
             urlConnection.setRequestProperty("Charset", "utf-8");
-            urlConnection.setRequestProperty("Host", "localhost");
             urlConnection.setRequestProperty("Content-Length", Integer.toString(postDataLength));
+
+            urlConnection.setConnectTimeout(100000);
+            urlConnection.setReadTimeout(100000);
+
             DataOutputStream outputStream = new DataOutputStream(urlConnection.getOutputStream());
             outputStream.write(postData);
             outputStream.flush();
@@ -68,6 +72,7 @@ public class LoginAsync extends AsyncTask<String, Void, Boolean> {
             }
 
             return false;
+
 
         } catch (Exception e) {
             System.out.println("LOGIN ERROR ==================== " + e.getMessage());
