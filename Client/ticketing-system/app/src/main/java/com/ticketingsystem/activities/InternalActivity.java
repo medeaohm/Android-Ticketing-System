@@ -43,9 +43,27 @@ public class InternalActivity extends AppCompatActivity implements NavigationSer
         }
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.logoutButton:
+                logout();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
     @Override
     public void goToInternalActivity() {
 
+    }
+
+    private void logout() {
+        Intent intent_login = new Intent(this, LoginActivity.class);
+        intent_login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent_login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK); // clears all previous activities task
+        finish(); // destroy current activity..
+        startActivity(intent_login);
     }
 }
