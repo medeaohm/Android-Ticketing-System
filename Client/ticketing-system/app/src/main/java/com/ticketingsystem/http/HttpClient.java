@@ -15,9 +15,9 @@ public class HttpClient {
         this.serverUrl = serverUrl;
     }
 /*
-    public void Register(String username, String password, String confirmPassword, ViewPager viewPager) {
-        String registerUrl = String.format("%sapi/account/register", this.serverUrl);
-        new RegisterAsync(context, viewPager, registerUrl).execute(username, password, confirmPassword);
+    public void Register(String firstName, String lastName, String username, String email, String password, String confirmPassword) {
+        String registerUrl = String.format("%s/api/account/register", this.serverUrl);
+        new RegisterAsync(context, registerUrl).execute(firstName, lastName, username, email, password, confirmPassword);
     }
 */
     public void Login(String username, String password, NavigationService navigationService) {

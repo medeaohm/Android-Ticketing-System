@@ -22,7 +22,8 @@
         </activity>
         <activity android:name=".activities.InternalActivity" />
         <activity android:name=".activities.HomeActivity" android:screenOrientation="sensorPortrait" />
-        <activity android:name=".activities.LoginActivity" android:screenOrientation="sensorPortrait"/>ait"/>
+        <activity android:name=".activities.LoginActivity" android:screenOrientation="sensorPortrait"/>
+        <activity android:name=".activities.RegisterActivity" android:screenOrientation="sensorPortrait"/>
     </application>
 
 </manifest>

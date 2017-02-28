@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity implements NavigationService
         setContentView(R.layout.activity_main);
 
         Boolean isUserRegistered = getSharedPreferences("PREFERENCE", MODE_PRIVATE)
-                .getBoolean("isUserRegistered", true);
+                .getBoolean("isUserRegistered", false);
         Boolean isUserLoggedIn = getSharedPreferences("PREFERENCE", MODE_PRIVATE)
                 .getBoolean("isUserLoggedIn", false);
 
