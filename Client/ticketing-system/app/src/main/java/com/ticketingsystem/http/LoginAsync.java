@@ -4,6 +4,8 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.ticketingsystem.models.UserLoginRequestModel;
 import com.ticketingsystem.navigation.NavigationService;
 import com.ticketingsystem.storage.TokensDbHandler;
 
@@ -11,83 +13,77 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.nio.charset.Charset;
 
 
-public class LoginAsync extends AsyncTask<String, Void, Boolean> {
-
+public class LoginAsync extends AsyncTask<Void, Void, String> {
+    private LoginCommand loginCommand;
     private Context context;
-    private NavigationService navigationService;
-    private String loginUrl;
+    private URI uri;
+    private UserLoginRequestModel userLoginRequestModel;
 
-    public LoginAsync(Context context, NavigationService navigationService, String loginUrl) {
+    public LoginAsync(Context context, URI uri, UserLoginRequestModel userLoginRequestModel, LoginCommand loginCommand) {
+        this.loginCommand = loginCommand;
         this.context = context;
-        this.navigationService = navigationService;
-        this.loginUrl = loginUrl;
+        this.uri = uri;
+        this.userLoginRequestModel = userLoginRequestModel;
     }
 
     @Override
-    protected Boolean doInBackground(String... params) {
+    protected String doInBackground(Void... params) {
+        Gson gson = new Gson();
+        String requestBody = gson.toJson(this.userLoginRequestModel);
+
+        URL url = null;
         try {
-            String urlParameters = String.format("Username=%s&Password=%s&grant_type=password", params[0], params[1]);
-            byte[] postData = urlParameters.getBytes(Charset.forName("UTF-8"));
-            int postDataLength = postData.length;
+            url = new URL("http://ticket-system-rest.apphb.com/token");
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
 
-            URL url = new URL(this.loginUrl);
-            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setUseCaches(false);
-            urlConnection.setDoInput(true);
-            urlConnection.setDoOutput(true);
-            urlConnection.setRequestMethod("POST");
-            urlConnection.setRequestProperty("Content-Type", "application/json");
-            urlConnection.setRequestProperty("Charset", "utf-8");
-            urlConnection.setRequestProperty("Content-Length", Integer.toString(postDataLength));
+        HttpURLConnection urlConnection = null;
 
+        try {
+            urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setConnectTimeout(100000);
             urlConnection.setReadTimeout(100000);
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setDoOutput(true);
+            urlConnection.setDoInput(true);
+            urlConnection.setRequestProperty("Content-Type", "application/json");
+            urlConnection.setRequestProperty("Accept", "application/json");
 
-            DataOutputStream outputStream = new DataOutputStream(urlConnection.getOutputStream());
-            outputStream.write(postData);
-            outputStream.flush();
-            outputStream.close();
-            urlConnection.connect();
+            OutputStream os = null;
+            os = urlConnection.getOutputStream();
+            os.write(requestBody.getBytes("UTF-8"));
 
-            BufferedReader reader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()), 512);
-            StringBuilder response = new StringBuilder();
-            String line;
-            while((line = reader.readLine()) != null) {
-                response.append(line);
+            StringBuilder sb = new StringBuilder();
+
+            BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+            String line = null;
+            while ((line = br.readLine()) != null) {
+                sb.append(line + "\n");
             }
 
-            if(urlConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                System.out.println("LOGIN ++++++++++++++++ ");
-                JSONObject json = new JSONObject(response.toString());
-                TokensDbHandler db = new TokensDbHandler(this.context, null);
-                db.addToken(json.getString("access_token"), "login");
-                return true;
-            }
-
-            return false;
-
-
-        } catch (Exception e) {
-            System.out.println("LOGIN ERROR ==================== " + e.getMessage());
+            String result = sb.toString();
+            return result;
+        } catch (IOException e) {
             e.printStackTrace();
-            return false;
         }
+
+        return null;
     }
 
     @Override
-    protected void onPostExecute(Boolean result) {
-        if(result.booleanValue() == true) {
-            Toast.makeText(this.context, "Successful login", Toast.LENGTH_SHORT).show();
-            this.navigationService.goToInternalActivity();
-        } else {
-            Toast.makeText(this.context, "Failed login",  Toast.LENGTH_SHORT).show();
-        }
+    protected void onPostExecute(String s) {
+        this.loginCommand.execute(s);
+        super.onPostExecute(s);
     }
 }

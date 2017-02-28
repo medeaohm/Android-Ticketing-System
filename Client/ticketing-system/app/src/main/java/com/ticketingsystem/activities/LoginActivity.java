@@ -14,14 +14,21 @@ import android.widget.Toast;
 
 import com.ticketingsystem.R;
 import com.ticketingsystem.http.HttpClient;
+import com.ticketingsystem.http.LoginAsync;
+import com.ticketingsystem.http.LoginCommand;
+import com.ticketingsystem.models.UserLoginRequestModel;
 import com.ticketingsystem.navigation.NavigationService;
+
+import java.net.URI;
+import java.net.URISyntaxException;
 
 public class LoginActivity extends Activity implements View.OnClickListener, NavigationService {
 
     private Boolean exit = false;
 
-    private EditText email;
+    private EditText username;
     private EditText password;
+    private String grant_type = "password";
     private ProgressDialog connectionProgressDialog;
 
     @Override
@@ -32,7 +39,7 @@ public class LoginActivity extends Activity implements View.OnClickListener, Nav
         connectionProgressDialog = new ProgressDialog(this);
         connectionProgressDialog.setMessage("Logging in ...");
 
-        this.email = (EditText) findViewById(R.id.login_email);
+        this.username = (EditText) findViewById(R.id.login_username);
         this.password = (EditText) findViewById(R.id.login_password);
 
         findViewById(R.id.btn_login).setOnClickListener(this);
@@ -84,9 +91,52 @@ public class LoginActivity extends Activity implements View.OnClickListener, Nav
     }
 
     public void onLogin() {
+        URI uri = null;
+        try {
+            uri = new URI("http://ticket-system-rest.apphb.com/token");
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+
+        UserLoginRequestModel user = new UserLoginRequestModel();
+        user.username = username.getText().toString();
+        user.password = password.getText().toString();
+        user.grant_type = grant_type;
+
+        LoginAsync loginAsyncTask = new LoginAsync(LoginActivity.this, uri, user, new LoginCommand() {
+            @Override
+            public void execute(String token) {
+                connectionProgressDialog.dismiss();
+                goToInternalActivity();
+                /*
+                if (token != null) {
+                    SharedPreferences settings = getSharedPreferences(Constants.SHARED_PREFERENCES_KEY, 0);
+
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.putString(Constants.TOKEN_SHARED_PREFERENCE_KEY, token);
+
+                    editor.commit();
+
+                    AlertDialogFactory.createInformationAlertDialog(LoginActivity.this, "Login successful.", "Success", new OkCommand() {
+                        @Override
+                        public void execute() {
+                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            LoginActivity.this.startActivity(intent);
+                            LoginActivity.this.finish();
+                        }
+                    }).show();
+                } else {
+                    AlertDialogFactory.createInformationAlertDialog(LoginActivity.this, "Login failed.", "Error", null).show();
+                }
+                */
+            }
+        });
+
+        connectionProgressDialog = new ProgressDialog(LoginActivity.this);
+        connectionProgressDialog.setIndeterminate(true);
+        connectionProgressDialog.setMessage("Logging in...");
         connectionProgressDialog.show();
-        HttpClient httpClient = new HttpClient(this, getResources().getString(R.string.server_url));
-        httpClient.Login(this.email.getText().toString(), this.password.getText().toString(), (NavigationService) this);
+        loginAsyncTask.execute();
     }
 
     @Override

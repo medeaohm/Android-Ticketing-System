@@ -20,11 +20,13 @@ public class HttpClient {
         new RegisterAsync(context, registerUrl).execute(firstName, lastName, username, email, password, confirmPassword);
     }
 */
+    /*
     public void Login(String username, String password, NavigationService navigationService) {
         String loginUrl = String.format("%s/token", this.serverUrl);
         new LoginAsync(context, navigationService, loginUrl).execute(username, password);
 
     }
+    */
 /*
     public void UploadImage(String filePath, int issueId) {
         TokensDbHandler tokensDbHandler = new TokensDbHandler(this.context, null);
