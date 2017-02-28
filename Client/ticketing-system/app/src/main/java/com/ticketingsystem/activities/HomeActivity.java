@@ -21,6 +21,8 @@ import android.widget.TextView;
 
 import com.ticketingsystem.R;
 
+import in.myinnos.customimagetablayout.ChangeColorTab;
+
 public class HomeActivity extends AppCompatActivity {
 
     /**
@@ -48,20 +50,16 @@ public class HomeActivity extends AppCompatActivity {
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-
-        // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager = (ViewPager) findViewById(R.id.viewpager);
+        ChangeColorTab changeColorTab = (ChangeColorTab) findViewById(R.id.tabChangeColorTab);
+        changeColorTab.setViewpager(mViewPager);
+//Attach page Adapter
         mViewPager.setAdapter(mSectionsPagerAdapter);
+        // Set up the ViewPager with the sections adapter.
+        //mViewPager = (ViewPager) findViewById(R.id.tabChangeColorTab);
+       // mViewPager.setAdapter(mSectionsPagerAdapter);
 
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
     }
 
@@ -72,7 +70,7 @@ public class HomeActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
-    
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
