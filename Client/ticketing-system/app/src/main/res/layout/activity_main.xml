@@ -1,44 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main_content"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tab="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context="com.ticketingsystem.activities.HomeActivity">
+    android:layout_height="match_parent">
 
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/appbar"
+    <in.myinnos.customimagetablayout.ChangeColorTab
+        android:id="@+id/tabChangeColorTab"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="@dimen/appbar_padding_top"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:layout_height="60dp">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll|enterAlways"
-            app:popupTheme="@style/AppTheme.PopupOverlay">
+        <in.myinnos.customimagetablayout.ChangeColorItem
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:padding="5dp"
 
-        </android.support.v7.widget.Toolbar>
+            tab:item_icon_color="#ff45c01a"
+            tab:item_tab_color="@color/colorPrimary"
+            tab:item_tab_position="bottom"
+            tab:item_text="message"
+            tab:item_text_color="@color/colorPrimaryDark"
+            tab:item_text_size="12sp" />
 
-    </android.support.design.widget.AppBarLayout>
+        <in.myinnos.customimagetablayout.ChangeColorItem
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:padding="5dp"
+
+            tab:item_icon_color="#ff45c01a"
+            tab:item_tab_color="@color/colorPrimary"
+            tab:item_tab_position="bottom"
+            tab:item_text="message2"
+            tab:item_text_color="@color/colorPrimaryDark"
+            tab:item_text_size="12sp" />
+
+        <in.myinnos.customimagetablayout.ChangeColorItem
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:padding="5dp"
+
+            tab:item_icon_color="#ff45c01a"
+            tab:item_tab_color="@color/colorPrimary"
+            tab:item_tab_position="bottom"
+            tab:item_text="message3"
+            tab:item_text_color="@color/colorPrimaryDark"
+            tab:item_text_size="12sp" />
+    </in.myinnos.customimagetablayout.ChangeColorTab>
 
     <android.support.v4.view.ViewPager
-        android:id="@+id/container"
+        android:id="@+id/viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom"
-        android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
-
-</android.support.design.widget.CoordinatorLayout>
+        android:layout_below="@+id/tabChangeColorTab" />
+</RelativeLayout>
