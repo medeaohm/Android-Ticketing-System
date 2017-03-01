@@ -1,5 +1,7 @@
 package com.ticketingsystem.activities;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -7,9 +9,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.ticketingsystem.R;
-import com.ticketingsystem.navigation.NavigationService;
+import com.ticketingsystem.http.LoginAsync;
+import com.ticketingsystem.http.LoginCommand;
+import com.ticketingsystem.models.UserLoginRequestModel;
+import com.ticketingsystem.utilities.AlertFactory;
+import com.ticketingsystem.utilities.OkCommand;
 
-public class MainActivity extends AppCompatActivity implements NavigationService{
+import java.net.URI;
+import java.net.URISyntaxException;
+
+public class MainActivity extends AppCompatActivity {
 
     private Boolean exit = false;
 
@@ -25,33 +34,26 @@ public class MainActivity extends AppCompatActivity implements NavigationService
 
 
         if (!isUserRegistered) {
-            Intent intent_register = new Intent(MainActivity.this, RegisterActivity.class);
-            intent_register.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            intent_register.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK); // clears all previous activities task
-            finish(); // destroy current activity..
-            startActivity(intent_register);
-            /*Toast.makeText(MainActivity.this, "User Not Registered", Toast.LENGTH_LONG)
-                    .show();*/
+            goToActivity(RegisterActivity.class);
         } else if (!isUserLoggedIn) {
-            Intent intent_login = new Intent(MainActivity.this, LoginActivity.class);
-            intent_login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            intent_login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK); // clears all previous activities task
-            finish(); // destroy current activity..
-            startActivity(intent_login);
-            Toast.makeText(MainActivity.this, "User Not Logged In", Toast.LENGTH_LONG).show();
-        } else {
-            Intent intent_issues = new Intent(MainActivity.this, HomeActivity.class);
-            intent_issues.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            intent_issues.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK); // clears all previous activities task
-            finish(); // destroy current activity..
-            startActivity(intent_issues);
-        }
-    }
+            String sp_username = "";
+            String sp_password = "";
 
-    @Override
-    public void goToInternalActivity() {
-        Intent intent = new Intent(this, InternalActivity.class);
-        startActivity(intent);
+            if (getSharedPreferences("PREFERENCE", MODE_PRIVATE).contains("username") &&
+                    getSharedPreferences("PREFERENCE", MODE_PRIVATE).contains("password")) {
+                sp_username = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getString("username", "");
+                sp_password = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getString("password", "");
+            }
+
+            if (sp_username != "" && sp_password != "") {
+                automaticLogin(sp_username, sp_password);
+                goToActivity(HomeActivity.class);
+            } else {
+                goToActivity(LoginActivity.class);
+            }
+        } else {
+            goToActivity(HomeActivity.class);
+        }
     }
 
     @Override
@@ -71,4 +73,34 @@ public class MainActivity extends AppCompatActivity implements NavigationService
         }
     }
 
+    private void goToActivity(final Class<? extends Activity> ActivityToOpen){
+        Intent intent = new Intent(MainActivity.this, ActivityToOpen);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK); // clears all previous activities task
+        finish(); // destroy current activity..
+        startActivity(intent);
+    }
+
+    public void automaticLogin(String username, String password) {
+        URI uri = null;
+        try {
+            uri = new URI("http://ticket-system-rest.apphb.com/token");
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+
+        UserLoginRequestModel user = new UserLoginRequestModel();
+        user.username = username;
+        user.password = password;
+        user.grant_type = "password";
+
+        LoginAsync loginAsyncTask = new LoginAsync(MainActivity.this, uri, user, new LoginCommand() {
+            @Override
+            public void execute(String token) {
+
+            }
+        });
+
+        loginAsyncTask.execute();
+    }
 }

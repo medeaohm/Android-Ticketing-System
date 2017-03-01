@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class TokensDbHandler extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 1;
-    private static final String DATABASE_NAME = "tokens1.db";
+    private static final String DATABASE_NAME = "tokens.db";
     private static final String TABLE_TOKENS = "tokens";
     private static final String COLUMN_ID = "_id";
     private static final String COLUMN_TOKEN = "token";

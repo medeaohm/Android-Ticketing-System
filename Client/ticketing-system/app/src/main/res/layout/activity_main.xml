@@ -17,8 +17,10 @@
 
             tab:item_icon_color="#ff45c01a"
             tab:item_tab_color="@color/colorPrimary"
+
             tab:item_tab_position="bottom"
-            tab:item_text="message"
+            tab:item_icon="@drawable/ic_buy_ticket"
+            tab:item_text="Buy Ticket"
             tab:item_text_color="@color/colorPrimaryDark"
             tab:item_text_size="12sp" />
 
@@ -31,7 +33,8 @@
             tab:item_icon_color="#ff45c01a"
             tab:item_tab_color="@color/colorPrimary"
             tab:item_tab_position="bottom"
-            tab:item_text="message2"
+            tab:item_icon="@drawable/ic_my_tickets"
+            tab:item_text="My Tickets"
             tab:item_text_color="@color/colorPrimaryDark"
             tab:item_text_size="12sp" />
 
@@ -44,9 +47,25 @@
             tab:item_icon_color="#ff45c01a"
             tab:item_tab_color="@color/colorPrimary"
             tab:item_tab_position="bottom"
-            tab:item_text="message3"
+            tab:item_icon="@drawable/ic_charge_account"
+            tab:item_text="Charge Account"
             tab:item_text_color="@color/colorPrimaryDark"
             tab:item_text_size="12sp" />
+
+        <in.myinnos.customimagetablayout.ChangeColorItem
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:padding="5dp"
+
+            tab:item_icon_color="#ff45c01a"
+            tab:item_tab_color="@color/colorPrimary"
+            tab:item_icon="@drawable/ic_my_profile"
+            tab:item_tab_position="bottom"
+            tab:item_text="My Profile"
+            tab:item_text_color="@color/colorPrimaryDark"
+            tab:item_text_size="12sp" />
+
     </in.myinnos.customimagetablayout.ChangeColorTab>
 
     <android.support.v4.view.ViewPager

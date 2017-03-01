@@ -2,27 +2,24 @@ package com.ticketingsystem.activities;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.ticketingsystem.R;
-import com.ticketingsystem.http.HttpClient;
 import com.ticketingsystem.http.LoginAsync;
 import com.ticketingsystem.http.LoginCommand;
 import com.ticketingsystem.models.UserLoginRequestModel;
-import com.ticketingsystem.navigation.NavigationService;
+import com.ticketingsystem.utilities.AlertFactory;
+import com.ticketingsystem.utilities.OkCommand;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 
-public class LoginActivity extends Activity implements View.OnClickListener, NavigationService {
+public class LoginActivity extends Activity implements View.OnClickListener {
 
     private Boolean exit = false;
 
@@ -35,9 +32,6 @@ public class LoginActivity extends Activity implements View.OnClickListener, Nav
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        connectionProgressDialog = new ProgressDialog(this);
-        connectionProgressDialog.setMessage("Logging in ...");
 
         this.username = (EditText) findViewById(R.id.login_username);
         this.password = (EditText) findViewById(R.id.login_password);
@@ -71,23 +65,10 @@ public class LoginActivity extends Activity implements View.OnClickListener, Nav
                 break;
             }
             case R.id.login_register :  {
-                Intent intent_register = new Intent(this, RegisterActivity.class);
-                intent_register.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent_register.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK); // clears all previous activities task
-                finish(); // destroy current activity..
-                startActivity(intent_register);
+                goToActivity(RegisterActivity.class);
                 break;
             }
         }
-    }
-
-    public static void showAlertMessage(Context context, String message, DialogInterface.OnClickListener listener) {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-        alertDialogBuilder.setMessage(message);
-        alertDialogBuilder.setTitle(R.string.app_name);
-        alertDialogBuilder.setPositiveButton("OK", listener);
-        alertDialogBuilder.setCancelable(true);
-        alertDialogBuilder.create().show();
     }
 
     public void onLogin() {
@@ -105,30 +86,22 @@ public class LoginActivity extends Activity implements View.OnClickListener, Nav
 
         LoginAsync loginAsyncTask = new LoginAsync(LoginActivity.this, uri, user, new LoginCommand() {
             @Override
-            public void execute(String token) {
+            public void execute(String access_token) {
+                System.out.println("++++++++++++++++ Token: " + access_token);
                 connectionProgressDialog.dismiss();
-                goToInternalActivity();
-                /*
-                if (token != null) {
-                    SharedPreferences settings = getSharedPreferences(Constants.SHARED_PREFERENCES_KEY, 0);
+                //goToActivity(HomeActivity.class);
 
-                    SharedPreferences.Editor editor = settings.edit();
-                    editor.putString(Constants.TOKEN_SHARED_PREFERENCE_KEY, token);
-
-                    editor.commit();
-
-                    AlertDialogFactory.createInformationAlertDialog(LoginActivity.this, "Login successful.", "Success", new OkCommand() {
+                if (access_token != null) {
+                    updateSharedPreferences();
+                    AlertFactory.createInformationAlertDialog(LoginActivity.this, "Login successful.", "Success", new OkCommand() {
                         @Override
                         public void execute() {
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                            LoginActivity.this.startActivity(intent);
-                            LoginActivity.this.finish();
+                            goToActivity(MainActivity.class);
                         }
                     }).show();
                 } else {
-                    AlertDialogFactory.createInformationAlertDialog(LoginActivity.this, "Login failed.", "Error", null).show();
+                    AlertFactory.createInformationAlertDialog(LoginActivity.this, "Login failed.", "Error", null).show();
                 }
-                */
             }
         });
 
@@ -139,9 +112,22 @@ public class LoginActivity extends Activity implements View.OnClickListener, Nav
         loginAsyncTask.execute();
     }
 
-    @Override
-    public void goToInternalActivity() {
-        Intent intent = new Intent(this, HomeActivity.class);
+    private void updateSharedPreferences(){
+        getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit()
+                .putBoolean("isUserRegistered", true).commit();
+        getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit()
+                .putBoolean("isUserLoggedIn", true).commit();
+        getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit()
+                .putString("username", username.getText().toString()).commit();
+        getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit()
+                .putString("password", password.getText().toString()).commit();
+    }
+
+    private void goToActivity(final Class<? extends Activity> ActivityToOpen){
+        Intent intent = new Intent(LoginActivity.this, ActivityToOpen);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK); // clears all previous activities task
+        finish(); // destroy current activity..
         startActivity(intent);
     }
 }

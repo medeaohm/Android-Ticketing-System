@@ -3,12 +3,9 @@ package com.ticketingsystem.activities;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.SyncStateContract;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -17,11 +14,12 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.ticketingsystem.R;
-import com.ticketingsystem.http.HttpClient;
 import com.ticketingsystem.http.RegisterAsync;
 import com.ticketingsystem.http.RegisterCommand;
 import com.ticketingsystem.models.UserRegisterRequestModel;
 import com.ticketingsystem.models.UserRegisterResponseModel;
+import com.ticketingsystem.utilities.AlertFactory;
+import com.ticketingsystem.utilities.OkCommand;
 
 public class RegisterActivity  extends Activity implements View.OnClickListener {
 
@@ -114,18 +112,20 @@ public class RegisterActivity  extends Activity implements View.OnClickListener 
             @Override
             public void execute(UserRegisterResponseModel user) {
                 progressDialog.dismiss();
-                goToLoginActivity();
-                /*
+
                 if (user != null) {
-                    SharedPreferences settings = getSharedPreferences(Constants.SHARED_PREFERENCES_KEY, 0);
+                    getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit()
+                            .putBoolean("isUserRegistered", true).commit();
 
-                    SharedPreferences.Editor editor = settings.edit();
-                    editor.putString(SyncStateContract.Constants.TOKEN_SHARED_PREFERENCE_KEY, user.token);
-
-                    editor.commit();
-
+                    AlertFactory.createInformationAlertDialog(activity, "Register successful.", "Success", new OkCommand() {
+                        @Override
+                        public void execute() {
+                            goToLoginActivity();
+                        }
+                    }).show();
+                } else {
+                    AlertFactory.createInformationAlertDialog(activity, "Register failed.", "Error", null).show();
                 }
-*/
             }
         });
 
