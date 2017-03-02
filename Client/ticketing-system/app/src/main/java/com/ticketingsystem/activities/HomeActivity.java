@@ -20,6 +20,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ticketingsystem.R;
+import com.ticketingsystem.fragments.BuyTicketFragment;
+import com.ticketingsystem.fragments.ChargeAccountFragment;
+import com.ticketingsystem.fragments.MyTicketsFragment;
 
 import in.myinnos.customimagetablayout.ChangeColorTab;
 
@@ -112,7 +115,17 @@ public class HomeActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-            return PlaceholderFragment.newInstance(position + 1);
+            switch (position) {
+                case 0:
+                    return new BuyTicketFragment();
+                case 1:
+                    return new MyTicketsFragment();
+                case 2:
+                    return new ChargeAccountFragment();
+                case 3:
+                    return new ChargeAccountFragment();
+            }
+            return null;
         }
 
         @Override
@@ -124,13 +137,13 @@ public class HomeActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "SECTION 1";
+                    return "Buy Ticket";
                 case 1:
-                    return "SECTION 2";
+                    return "My Tickets";
                 case 2:
-                    return "SECTION 3";
+                    return "Charge Account";
                 case 3:
-                    return "SECTION 4";
+                    return "My Profile";
             }
             return null;
         }

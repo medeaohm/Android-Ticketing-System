@@ -45,6 +45,7 @@ public class RegisterAsync extends AsyncTask<Void, Void, UserRegisterResponseMod
         try {
             url = new URL("http://ticket-system-rest.apphb.com/api/account/register");
         } catch (MalformedURLException e) {
+            System.out.println("++++++++++++++++ error: " + e);
             e.printStackTrace();
         }
 
@@ -62,15 +63,27 @@ public class RegisterAsync extends AsyncTask<Void, Void, UserRegisterResponseMod
 
             OutputStream os = null;
             os = urlConnection.getOutputStream();
-            os.write(requestBody.getBytes("UTF-8"));
+            os.write(
+                    (
+                            "firstName=" + userRegisterRequestModel.firstName +
+                            "&lastName=" + userRegisterRequestModel.lastName +
+                            "&username=" + userRegisterRequestModel.userName +
+                            "&email=" + userRegisterRequestModel.email +
+                            "&password=" + userRegisterRequestModel.password +
+                            "&confirmPassword=" + userRegisterRequestModel.confirmPassword
+                    )
+                    .getBytes("UTF-8"));
 
             StringBuilder sb = new StringBuilder();
+            System.out.println("++++++++++++++++ os: " + os);
 
             BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+            System.out.println("++++++++++++++++ os: " + os);
             String line = null;
             while ((line = br.readLine()) != null) {
                 sb.append(line + "\n");
             }
+
 
             String resultString = sb.toString();
 
@@ -78,6 +91,7 @@ public class RegisterAsync extends AsyncTask<Void, Void, UserRegisterResponseMod
 
             return result;
         } catch (IOException e) {
+            System.out.println("++++++++++++++++ error: " + e);
             e.printStackTrace();
         }
         return null;
