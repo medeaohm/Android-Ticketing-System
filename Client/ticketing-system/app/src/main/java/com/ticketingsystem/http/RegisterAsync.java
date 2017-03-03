@@ -2,28 +2,16 @@ package com.ticketingsystem.http;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.support.v4.view.ViewPager;
-import android.widget.Toast;
 
-import com.ticketingsystem.R;
+import com.google.gson.Gson;
 import com.ticketingsystem.models.UserRegisterRequestModel;
-import com.ticketingsystem.models.UserRegisterResponseModel;
 
-import java.io.BufferedReader;
 import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.charset.Charset;
-import java.util.List;
-import java.util.Map;
 
-import com.google.gson.Gson;
-
-public class RegisterAsync extends AsyncTask<Void, Void, UserRegisterResponseModel> {
+public class RegisterAsync extends AsyncTask<Void, Void, Boolean> {
 
     private RegisterCommand registerCommand;
     private Context context;
@@ -36,16 +24,14 @@ public class RegisterAsync extends AsyncTask<Void, Void, UserRegisterResponseMod
     }
 
     @Override
-    protected UserRegisterResponseModel doInBackground(Void... params) {
-
+    protected Boolean doInBackground(Void... params) {
         Gson gson = new Gson();
-        String requestBody = gson.toJson(this.userRegisterRequestModel);
+        String requestBody = gson.toJson(userRegisterRequestModel);
 
         URL url = null;
         try {
             url = new URL("http://ticket-system-rest.apphb.com/api/account/register");
         } catch (MalformedURLException e) {
-            System.out.println("++++++++++++++++ error: " + e);
             e.printStackTrace();
         }
 
@@ -61,45 +47,27 @@ public class RegisterAsync extends AsyncTask<Void, Void, UserRegisterResponseMod
             urlConnection.setRequestProperty("Content-Type", "application/json");
             urlConnection.setRequestProperty("Accept", "application/json");
 
-            OutputStream os = null;
-            os = urlConnection.getOutputStream();
-            os.write(
-                    (
-                            "firstName=" + userRegisterRequestModel.firstName +
-                            "&lastName=" + userRegisterRequestModel.lastName +
-                            "&username=" + userRegisterRequestModel.userName +
-                            "&email=" + userRegisterRequestModel.email +
-                            "&password=" + userRegisterRequestModel.password +
-                            "&confirmPassword=" + userRegisterRequestModel.confirmPassword
-                    )
-                    .getBytes("UTF-8"));
+            DataOutputStream outputStream = new DataOutputStream(urlConnection.getOutputStream());
+            outputStream.write(requestBody.getBytes("UTF-8"));
+            outputStream.flush();
+            outputStream.close();
+            urlConnection.connect();
+            System.out.println("++++++++++++++++ code : " + urlConnection.getResponseCode());
 
-            StringBuilder sb = new StringBuilder();
-            System.out.println("++++++++++++++++ os: " + os);
-
-            BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-            System.out.println("++++++++++++++++ os: " + os);
-            String line = null;
-            while ((line = br.readLine()) != null) {
-                sb.append(line + "\n");
+            if(urlConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                return true;
             }
+            return false;
 
-
-            String resultString = sb.toString();
-
-            UserRegisterResponseModel result = gson.fromJson(resultString, UserRegisterResponseModel.class);
-
-            return result;
-        } catch (IOException e) {
-            System.out.println("++++++++++++++++ error: " + e);
+        } catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
-        return null;
     }
 
     @Override
-    protected void onPostExecute(UserRegisterResponseModel userRegisterResponseModel) {
-        this.registerCommand.execute(userRegisterResponseModel);
-        super.onPostExecute(userRegisterResponseModel);
+    protected void onPostExecute(Boolean result) {
+        this.registerCommand.execute(result);
+        super.onPostExecute(result);
     }
 }

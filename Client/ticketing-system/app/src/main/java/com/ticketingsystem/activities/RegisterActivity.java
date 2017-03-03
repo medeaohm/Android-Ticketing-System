@@ -101,19 +101,19 @@ public class RegisterActivity  extends Activity implements View.OnClickListener 
     private void onRegisterClick() {
 
         UserRegisterRequestModel user = new UserRegisterRequestModel();
+        user.firstName =  firstName.getText().toString();
+        user.lastName =  lastName.getText().toString();
+        user.email =  email.getText().toString();
         user.userName = username.getText().toString();
         user.password = password.getText().toString();
-        user.firstName =  firstName.getText().toString();
-        user.lastName =  password.getText().toString();
-        user.email =  email.getText().toString();
         user.confirmPassword =  password.getText().toString();
 
         RegisterAsync registerAsyncTask = new RegisterAsync(activity, user, new RegisterCommand() {
             @Override
-            public void execute(UserRegisterResponseModel user) {
+            public void execute(Boolean result) {
                 progressDialog.dismiss();
 
-                if (user != null) {
+                if (result) {
                     getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit()
                             .putBoolean("isUserRegistered", true).commit();
 
