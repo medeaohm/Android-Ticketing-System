@@ -26,6 +26,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     private EditText username;
     private EditText password;
     private String grant_type = "password";
+    private String token = "";
     private ProgressDialog connectionProgressDialog;
 
     @Override
@@ -87,6 +88,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         LoginAsync loginAsyncTask = new LoginAsync(LoginActivity.this, uri, user, new LoginCommand() {
             @Override
             public void execute(String access_token) {
+                token = access_token;
                 System.out.println("++++++++++++++++ Token: " + access_token);
                 connectionProgressDialog.dismiss();
                 //goToActivity(HomeActivity.class);
@@ -113,6 +115,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     }
 
     private void updateSharedPreferences(){
+
         getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit()
                 .putBoolean("isUserRegistered", true).commit();
         getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit()
@@ -121,6 +124,8 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                 .putString("username", username.getText().toString()).commit();
         getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit()
                 .putString("password", password.getText().toString()).commit();
+        getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit()
+                .putString("token", token).commit();
     }
 
     private void goToActivity(final Class<? extends Activity> ActivityToOpen){

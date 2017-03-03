@@ -1,3 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,10 +10,115 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.ticketingsystem.activities.HomeActivity$PlaceholderFragment">
 
-    <TextView
-        android:id="@+id/section_label"
-        android:layout_width="wrap_content"
+<TextView
+    android:id="@+id/charge_label"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:textAppearance="?android:attr/textAppearanceLarge"
+    android:text="Charge Account"
+    android:layout_marginTop="20dp"
+    android:textColor="@color/blue"
+    android:gravity="center_horizontal"/>
+<LinearLayout
+    android:id="@+id/charge_basicElementsContainer"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/charge_label"
+    android:layout_marginTop="20dp"
+    android:layout_marginLeft="15dp"
+    android:layout_marginRight="15dp">
+    <EditText
+        android:id="@+id/charge_card_num"
+        android:background="#FFFFFF"
+        android:textColorHint="@color/green"
+        android:textColor="#000000"
+        android:padding="12dp"
+        android:hint="Card Number"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="CHARGE ACCOUNT FRAGMENT"/>
+        android:inputType="number"
+        android:ems="10"
+        android:layout_marginTop="5dp" />
+    <EditText
+        android:id="@+id/charge_name"
+        android:background="#FFFFFF"
+        android:textColorHint="@color/green"
+        android:textColor="#000000"
+        android:padding="12dp"
+        android:hint="Name On Card"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:layout_marginTop="1dp" />
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+        <Spinner
+            android:id="@+id/charge_expiration_month"
+            android:background="#FFFFFF"
+            android:textColorHint="@color/green"
+            android:textColor="#000000"
+            android:padding="4dp"
+            android:hint="Month"
+            android:layout_width="147dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:layout_marginTop="1dp"
+            android:spinnerMode="dropdown"
+            />
+        <Spinner
+            android:id="@+id/charge_expiration_year"
+            android:background="#FFFFFF"
+            android:textColorHint="@color/green"
+            android:textColor="#000000"
+            android:padding="4dp"
+            android:hint="Year"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:ems="10"
+            android:layout_toRightOf="@id/charge_expiration_month"
+            android:spinnerMode="dropdown"
+            android:layout_marginTop="1dp"/>
+    </RelativeLayout>
+
+    <EditText
+        android:id="@+id/charge_ccv"
+        android:background="#FFFFFF"
+        android:textColorHint="@color/green"
+        android:textColor="#000000"
+        android:padding="12dp"
+        android:hint="CCV"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:layout_marginTop="1dp"/>
+    <EditText
+        android:id="@+id/charge_amount"
+        android:background="#FFFFFF"
+        android:textColorHint="@color/green"
+        android:textColor="#000000"
+        android:padding="12dp"
+        android:hint="Amount"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
+        android:ems="10"
+        android:layout_marginTop="1dp"/>
+    <Button
+        android:id="@+id/charge_btn"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/charge_amount"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:text="Pay Now"
+        android:background="#16a086"
+        android:enabled="true"/>
+</LinearLayout>
 
 </RelativeLayout>
