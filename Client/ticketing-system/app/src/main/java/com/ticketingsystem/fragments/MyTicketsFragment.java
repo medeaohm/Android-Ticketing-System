@@ -1,9 +1,7 @@
 package com.ticketingsystem.fragments;
 
 import android.app.ActivityManager;
-import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -18,32 +16,15 @@ import com.ticketingsystem.activities.HomeActivity;
 import com.ticketingsystem.adapters.ListItemAdapter;
 import com.ticketingsystem.http.IMyTicket;
 import com.ticketingsystem.http.LoadMyTicketsAsync;
-import com.ticketingsystem.models.MyTicketsListItemModel;
 import com.ticketingsystem.models.TokenModel;
-
-import java.util.List;
 
 import static android.content.Context.MODE_PRIVATE;
 
-/*
-public class MyTicketsFragment extends Fragment{
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
-        View rootView = inflater.inflate(R.layout.fragment_my_tickets, container, false);
-        return rootView;
-    }
-}
-*/
 public class MyTicketsFragment extends ListFragment {
     ActivityManager manager;
     private TokenModel token;
 
     Gson gson = new Gson();
-
-    private final static int NUMBER_OF_ISSUES_TO_LOAD = 10;
-    List<MyTicketsListItemModel> ticketList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -52,6 +33,7 @@ public class MyTicketsFragment extends ListFragment {
         String authorizationToken = this.getActivity().getSharedPreferences("PREFERENCE", MODE_PRIVATE)
                 .getString("token", "");
         token = gson.fromJson(authorizationToken, TokenModel.class);
+
         return  view;
     }
 
@@ -63,22 +45,18 @@ public class MyTicketsFragment extends ListFragment {
 
         adapter = new ListItemAdapter(getActivity(), ((HomeActivity) getActivity()).myTicketList);
         setListAdapter(adapter);
-
-        /*
-        if(adapter == null) {
-            List<MyTicketsListItemModel> list = ((HomeActivity) getActivity()).myTicketList;
-            System.out.println("++++++++++++++++ list 1: " + list);
-            list.clear();
-            adapter = new ListItemAdapter(getActivity(), ((HomeActivity) getActivity()).myTicketList);
-            System.out.println("++++++++++++++++ adapter : " + adapter.getCount());
-            setListAdapter(adapter);
-        }
-        */
-
         LoadMyTickets((IMyTicket) getActivity(), adapter, token.access_token);
         System.out.println("++++++++++++++++ list 2: " + ((HomeActivity) getActivity()).myTicketList.size());
         System.out.println("++++++++++++++++ adapter : " + adapter.getCount());
     }
+
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        super.onListItemClick(l, v, position, id);
+        //Toast.makeText(getActivity(), "item clicked" + position, Toast.LENGTH_SHORT).show();
+        adapter.setCurrentPosition(position);
+    }
+
 
     public void LoadMyTickets(IMyTicket myTickets, ListItemAdapter adapter, String authorizationToken) {
         String loadMyTicketsUrl = "http://ticket-system-rest.apphb.com/api/tickets";

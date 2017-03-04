@@ -22,6 +22,7 @@ import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -95,7 +96,7 @@ public class LoadMyTicketsAsync extends AsyncTask<String, Void, JSONArray> {
 
                 Date boughtAt = sdf.parse(ticket.getString("BoughtAt"));
                 Date dateActivated = ticket.getString("DateActivated") == "null" ? null : sdf.parse(ticket.getString("DateActivated"));
-                Date expiresOn = ticket.getString("ExpiresOn") == "null" ? null : sdf.parse(ticket.getString("ExpiresOn"));
+                Calendar expiresOn = ticket.getString("ExpiresOn") == "null" ? null : toCalendar(sdf.parse(ticket.getString("ExpiresOn")));
 
                 MyTicketsListItemModel ticketForListing =
                         new MyTicketsListItemModel(
@@ -123,5 +124,11 @@ public class LoadMyTicketsAsync extends AsyncTask<String, Void, JSONArray> {
         this.myTicket.setMyTicketData(ticketReadyForListing);
         System.out.println("++++++++++++++++ myTicket : " + this.myTicket.toString());
         this.adapter.notifyDataSetChanged();
+    }
+
+    public static Calendar toCalendar(Date date){
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        return cal;
     }
 }
