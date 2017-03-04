@@ -24,24 +24,25 @@
                 android:text="QR Code"
                 android:textColor="@color/blue"/>
             <TextView
-                android:id="@+id/ticket_is_active_headers"
+                android:id="@+id/ticket_status_headers"
                 android:layout_width="80dp"
                 android:layout_height="70dp"
                 android:layout_toRightOf="@id/ticket_QR_headers"
-                android:text="Active"
-                android:textColor="@color/blue"/>
+                android:text="Status"
+                android:textColor="@color/blue"
+                android:enabled="false"/>
             <TextView
-                android:id="@+id/ticket_is_expired_headers"
+                android:id="@+id/ticket_expires_on_headers"
                 android:layout_width="80dp"
                 android:layout_height="70dp"
-                android:layout_toRightOf="@id/ticket_is_active_headers"
-                android:text="Expired"
+                android:layout_toRightOf="@id/ticket_status_headers"
+                android:text="Expires On"
                 android:textColor="@color/blue"/>
             <TextView
                 android:id="@+id/ticket_duration_headers"
                 android:layout_width="80dp"
                 android:layout_height="70dp"
-                android:layout_toRightOf="@id/ticket_is_expired_headers"
+                android:layout_toRightOf="@id/ticket_expires_on_headers"
                 android:text="Duration"
                 android:textColor="@color/blue"/>
         </RelativeLayout>

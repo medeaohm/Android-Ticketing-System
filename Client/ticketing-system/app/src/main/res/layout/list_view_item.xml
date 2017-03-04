@@ -17,29 +17,29 @@
             android:layout_weight="1">
 
             <ImageView
-                android:id="@+id/ticket_icon"
+                android:id="@+id/ticket_QR_code"
                 android:layout_width="110dp"
                 android:layout_height="70dp"
                 android:layout_marginRight="6dip"
                 android:src="@drawable/ic_buy_ticket" />
             <TextView
-                android:id="@+id/ticket_is_active"
+                android:id="@+id/ticket_status"
                 android:layout_width="80dp"
                 android:layout_height="70dp"
-                android:layout_toRightOf="@id/ticket_icon"
+                android:layout_toRightOf="@id/ticket_QR_code"
                 android:text="Hi"
                 android:gravity="center_vertical"/>
             <TextView
-                android:id="@+id/ticket_is_expired"
+                android:id="@+id/ticket_expires_on"
                 android:layout_width="80dp"
                 android:layout_height="70dp"
-                android:layout_toRightOf="@id/ticket_is_active"
+                android:layout_toRightOf="@id/ticket_status"
                 android:gravity="center_vertical"/>
             <TextView
                 android:id="@+id/ticket_duration"
                 android:layout_width="80dp"
                 android:layout_height="70dp"
-                android:layout_toRightOf="@id/ticket_is_expired"
+                android:layout_toRightOf="@id/ticket_expires_on"
                 android:gravity="center_vertical"/>
         </RelativeLayout>
     </LinearLayout>
