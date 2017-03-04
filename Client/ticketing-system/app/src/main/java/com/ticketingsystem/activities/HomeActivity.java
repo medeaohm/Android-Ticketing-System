@@ -15,17 +15,24 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ticketingsystem.R;
+import com.ticketingsystem.adapters.ListItemAdapter;
 import com.ticketingsystem.fragments.BuyTicketFragment;
 import com.ticketingsystem.fragments.ChargeAccountFragment;
 import com.ticketingsystem.fragments.MyProfileFragment;
 import com.ticketingsystem.fragments.MyTicketsFragment;
+import com.ticketingsystem.http.IMyTicket;
+import com.ticketingsystem.models.MyTicketsListItemModel;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import in.myinnos.customimagetablayout.ChangeColorTab;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity implements IMyTicket {
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
+    public List<MyTicketsListItemModel> myTicketList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +43,8 @@ public class HomeActivity extends AppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
         ChangeColorTab changeColorTab = (ChangeColorTab) findViewById(R.id.tabChangeColorTab);
         changeColorTab.setViewpager(mViewPager);
+
+        myTicketList = new ArrayList<>();
 
         mViewPager.setAdapter(mSectionsPagerAdapter);
     }
@@ -57,6 +66,25 @@ public class HomeActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void setMyTicketData(List<MyTicketsListItemModel> models) {
+
+        if(myTicketList.size() == 0) {
+            myTicketList.clear();
+            myTicketList.addAll(models);
+            return;
+        }
+
+        for(int i = 0; i < models.size(); i++) {
+            MyTicketsListItemModel model = models.get(i);
+            if(collectionContainsObject(myTicketList, model) == false) {
+                myTicketList.add(model);
+            }
+        }
+
+        System.out.println("++++++++++++++++ myTicketList home: " + myTicketList.size());
     }
 
     private void logout() {
@@ -143,5 +171,16 @@ public class HomeActivity extends AppCompatActivity {
             }
             return null;
         }
+    }
+
+    private boolean collectionContainsObject(List<MyTicketsListItemModel> collection, MyTicketsListItemModel obj) {
+        for(int i = 0; i < collection.size(); i++) {
+            MyTicketsListItemModel model = collection.get(i);
+            if((model.getDuration().equals(obj.getDuration()))) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

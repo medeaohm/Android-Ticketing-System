@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="?android:attr/listPreferredItemHeight"
+    android:orientation="vertical"
+    android:padding="6dip">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="20dp">
+        <RelativeLayout
+            android:id="@+id/tickets_table_headers"
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/ticket_QR_headers"
+                android:layout_width="110dp"
+                android:layout_height="70dp"
+                android:layout_marginRight="6dip"
+                android:text="QR Code"
+                android:textColor="@color/blue"/>
+            <TextView
+                android:id="@+id/ticket_is_active_headers"
+                android:layout_width="80dp"
+                android:layout_height="70dp"
+                android:layout_toRightOf="@id/ticket_QR_headers"
+                android:text="Active"
+                android:textColor="@color/blue"/>
+            <TextView
+                android:id="@+id/ticket_is_expired_headers"
+                android:layout_width="80dp"
+                android:layout_height="70dp"
+                android:layout_toRightOf="@id/ticket_is_active_headers"
+                android:text="Expired"
+                android:textColor="@color/blue"/>
+            <TextView
+                android:id="@+id/ticket_duration_headers"
+                android:layout_width="80dp"
+                android:layout_height="70dp"
+                android:layout_toRightOf="@id/ticket_is_expired_headers"
+                android:text="Duration"
+                android:textColor="@color/blue"/>
+        </RelativeLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/tickets_table_headers">
+
+        <ListView
+            android:id="@android:id/list"
+            android:layout_height="fill_parent"
+            android:layout_width="match_parent"/>
+    </LinearLayout>
+</LinearLayout>
