@@ -7,11 +7,8 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -97,7 +94,7 @@ public class ListItemAdapter extends BaseAdapter implements View.OnClickListener
         QRcode.setImageBitmap(listItem.getQRCode());
         setTextStatus();
         setTextExpiresOn();
-        duration.setText(listItem.getId().toString());
+        setTextDuration();
 
         return convertView;
     }
@@ -106,17 +103,22 @@ public class ListItemAdapter extends BaseAdapter implements View.OnClickListener
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.ticket_status : {
+                View parentRow = (View) v.getParent();
+                /*
+                ListView listView = (ListView) parentRow;
+                final int position = listView.getPositionForView(parentRow); */
                 this.activateTicket(currentId);
-                if(mOnTicketActivatedListener != null){
-                    mOnTicketActivatedListener.onActivation();
-                }
                 break;
             }
         }
     }
 
-    private void activateTicket(String request_id) {
-        ActivateTicketAsync activateAsyncTask = new ActivateTicketAsync(this.context, token.access_token, request_id, new ActivateTicketCommand() {
+    private void activateTicket(String currentId) {
+/*
+        listItem = (MyTicketsListItemModel)getItem(position);
+        currentId = listItem.getId();
+*/
+        ActivateTicketAsync activateAsyncTask = new ActivateTicketAsync(this.context, token.access_token, currentId, new ActivateTicketCommand() {
             @Override
             public void execute(Boolean result) {
                 progressDialog.dismiss();
@@ -181,6 +183,30 @@ public class ListItemAdapter extends BaseAdapter implements View.OnClickListener
             expiresOn.setText("-");
             expiresOn.setTextColor(context.getResources().getColor(R.color.blue));
         }
+    }
+
+    private void setTextDuration() {
+        String durationStr = "";
+        if ((int)(listItem.getDuration()) < 24){
+            durationStr = listItem.getDuration().toString() + " " + ((int)(listItem.getDuration()) == 1 ? "hour" : "hours");
+        }
+        else if ((int)(listItem.getDuration()) < 168){
+            durationStr = ((int)listItem.getDuration() / 24) + " " + ((int)listItem.getDuration()/24 == 1 ? "day" : "days");
+        }
+        else if ((int)(listItem.getDuration()) < 720){
+            durationStr = ((int)listItem.getDuration() / (24 * 7)) + " " + ((int)listItem.getDuration()/(24*7) == 1 ? "week" : "weeks");
+        }
+        else if ((int)(listItem.getDuration()) == 720){
+            durationStr = "1 month";
+        }
+        else if ((int)(listItem.getDuration()) == 2208){
+            durationStr = "3 month";
+        }
+        else {
+            durationStr = "-";
+        }
+        duration.setText(durationStr);
+        duration.setTextColor(context.getResources().getColor(R.color.blue));
     }
 
     private void goToHomeActivity () {
