@@ -1,3 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,9 +11,80 @@
     tools:context="com.ticketingsystem.activities.HomeActivity$PlaceholderFragment">
 
     <TextView
-        android:id="@+id/section_label"
-        android:layout_width="wrap_content"
+        android:id="@+id/charge_label"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="BUY TICKET FRAGMENT"/>
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Buy Ticket"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/blue"
+        android:gravity="center_horizontal"/>
+
+    <LinearLayout
+        android:id="@+id/charge_basicElementsContainer"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="22dp"
+        android:layout_below="@+id/charge_label"
+        android:layout_centerHorizontal="true">
+        <TextView
+            android:id="@+id/ticket_buy_info"
+            android:background="#FFFFFF"
+            android:textColor="@color/blue"
+            android:padding="12dp"
+            android:textAllCaps="true"
+            android:textColorHighlight="@color/blue"
+            android:text="@string/buy_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:width="0dip"
+            android:layout_marginTop="5dp" />
+
+        <RelativeLayout
+            android:id="@+id/ticket_buy_info_container"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+            <Spinner
+                android:id="@+id/ticket_buy_duration"
+                android:background="#FFFFFF"
+                android:textColorHint="@color/green"
+                android:textColor="#000000"
+                android:padding="4dp"
+                android:hint="Month"
+                android:layout_width="147dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:layout_marginTop="1dp"
+                android:spinnerMode="dropdown"
+                />
+            <TextView
+                android:id="@+id/ticket_buy_price"
+                android:background="#FFFFFF"
+                android:textColorHint="@color/green"
+                android:textColor="@color/green"
+                android:padding="17dp"
+                android:textSize="17dp"
+                android:hint="Year"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:ems="10"
+                android:layout_toRightOf="@id/ticket_buy_duration"
+                android:layout_marginTop="1dp"/>
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/ticket_buy_btn"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ticket_buy_info_container"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:text="Buy Now"
+            android:background="#16a086"
+            android:enabled="true"/>
+    </LinearLayout>
 
 </RelativeLayout>

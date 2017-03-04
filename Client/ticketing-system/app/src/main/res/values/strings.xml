@@ -3,4 +3,9 @@
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="server_url">http://ticket-system-rest.apphb.com</string>
+    <string name="buy_description">
+        Easy buy with just select the duration of the ticket. Just for 0.1 leva per hour!.
+        You can use all public transport types in city.
+        Just choose the duration below and the price will be calculated automatically."
+    </string>
 </resources>

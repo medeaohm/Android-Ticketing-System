@@ -33,8 +33,6 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class ChargeAccountFragment extends Fragment implements View.OnClickListener{
 
-    private Boolean exit = false;
-
     private EditText cardNumber;
     private EditText securityCode;
     private Spinner expireMonth;
