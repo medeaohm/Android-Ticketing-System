@@ -59,7 +59,7 @@ public class ListItemAdapter extends BaseAdapter{
         Picasso picasso = PicassoBuilder.getInstance(this.context);
 
         picasso.load(listItem.getImage()).fit().into(imgIcon);*/
-
+        imgIcon.setImageBitmap(listItem.getQRCode());
         isActive.setText(listItem.getIsActivated() ? "Yes" : "No");
         isExpired.setText(listItem.getIsExpired() ? "Yes" : "No");
         duration.setText(listItem.getDuration().toString());

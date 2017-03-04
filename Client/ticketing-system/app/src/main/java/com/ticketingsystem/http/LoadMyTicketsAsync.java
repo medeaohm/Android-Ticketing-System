@@ -1,7 +1,10 @@
 package com.ticketingsystem.http;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.util.Base64;
 
 import com.ticketingsystem.activities.HomeActivity;
 import com.ticketingsystem.adapters.ListItemAdapter;
@@ -16,6 +19,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -81,27 +86,37 @@ public class LoadMyTicketsAsync extends AsyncTask<String, Void, JSONArray> {
     protected void onPostExecute(JSONArray listOfTickets) {
         List<MyTicketsListItemModel> ticketReadyForListing = new ArrayList<MyTicketsListItemModel>();
 
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         for(int i = 0; i < listOfTickets.length(); i++) {
             try {
                 JSONObject ticket = listOfTickets.getJSONObject(i);
+                byte[] byteArray =  Base64.decode(ticket.getString("QRCode"), Base64.DEFAULT) ;
+                Bitmap bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+
+                Date boughtAt = sdf.parse(ticket.getString("BoughtAt"));
+                Date dateActivated = ticket.getString("DateActivated") == "null" ? null : sdf.parse(ticket.getString("DateActivated"));
+                Date expiresOn = ticket.getString("ExpiresOn") == "null" ? null : sdf.parse(ticket.getString("ExpiresOn"));
 
                 MyTicketsListItemModel ticketForListing =
                         new MyTicketsListItemModel(
                                 ticket.getString("Id"),
-                                null,
+                                boughtAt,
                                 ticket.getDouble("Cost"),
                                 ticket.getBoolean("Expired"),
                                 ticket.getBoolean("Activated"),
-                                null,
-                                null,
+                                dateActivated,
+                                expiresOn,
                                 ticket.getInt("Duration"),
-                                ticket.getString("QRCode")
+                                bmp
                         );
 
                 ticketReadyForListing.add(ticketForListing);
                 System.out.println("++++++++++++++++ ticketReadyForListing : " + ticketReadyForListing.size());
             } catch (JSONException ex) {
                 System.out.println("++++++++++++++++ e4 : " + ex);
+
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
         }
 

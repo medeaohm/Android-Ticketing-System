@@ -1,5 +1,6 @@
 package com.ticketingsystem.models;
 
+import android.graphics.Bitmap;
 import android.net.Uri;
 import java.util.ArrayList;
 import java.util.Date;
@@ -14,11 +15,11 @@ public class MyTicketsListItemModel {
     private Date DateActivated;
     private Date ExpiresOn;
     private Number Duration;
-    private String QRCode;
+    private Bitmap QRCode;
     /*
     * [{ Id: "GUID", BoughtAt: "Date", Cost: "Decimal", Expired: "Bool", "Activated": "Bool", "DateActivated": "Date/null", "ExpiresOn": "Date/null", Duration: "NumberHours", QRCode: "LongText", Owner: { "Owner": { Id: "GUID" UserName: "Text", FullName: "Text"} } ]
     * */
-    public MyTicketsListItemModel(String Id, Date BoughtAt, Number Cost, Boolean Expired, Boolean Activated,Date DateActivated, Date ExpiresOn, Number Duration,String QRCode) {
+    public MyTicketsListItemModel(String Id, Date BoughtAt, Number Cost, Boolean Expired, Boolean Activated,Date DateActivated, Date ExpiresOn, Number Duration, Bitmap QRCode) {
         this.Id = Id;
         this.BoughtAt = BoughtAt;
         this.Cost = Cost;
@@ -46,5 +47,5 @@ public class MyTicketsListItemModel {
 
     public Number getDuration() { return this.Duration; }
 
-    public String getQRCode(){ return  this.QRCode; }
+    public Bitmap getQRCode(){ return  this.QRCode; }
 }
