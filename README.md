@@ -36,27 +36,33 @@ The purpose of the application is to allow users to buy tickets for the public t
 The application consists of:
 
 - **Register**
+
     ![register](https://github.com/medeaohm/Android-Ticketing-System/blob/master/resources/screen%20captures/register.JPG?raw=true)
 
 
 - **Login**
+
     ![login](https://github.com/medeaohm/Android-Ticketing-System/blob/master/resources/screen%20captures/login.JPG?raw=true)
 
 
 - **View profile** 
+
 	![profile - view](https://github.com/medeaohm/Android-Ticketing-System/blob/master/resources/screen%20captures/profile.JPG?raw=true)
 
 
 - **Charge account** 
+
 	![charge account](https://github.com/medeaohm/Android-Ticketing-System/blob/master/resources/screen%20captures/charge_account.JPG?raw=true)
 	![charge account](https://github.com/medeaohm/Android-Ticketing-System/blob/master/resources/screen%20captures/charge_account2.JPG?raw=true)
 	
 
 - **Buy Tickets** 
+
 	![buy ticket](https://github.com/medeaohm/Android-Ticketing-System/blob/master/resources/screen%20captures/buy_ticket.JPG?raw=true) 
 
 
 - **View and Activate Tickets** 
+
 	![view tickets](https://github.com/medeaohm/Android-Ticketing-System/blob/master/resources/screen%20captures/my_tickets1.JPG?raw=true)   
 	![view tickets](https://github.com/medeaohm/Android-Ticketing-System/blob/master/resources/screen%20captures/my_tickets2.JPG?raw=true)   
 	
