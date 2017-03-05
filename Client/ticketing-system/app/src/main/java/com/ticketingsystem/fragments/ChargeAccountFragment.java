@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.ticketingsystem.R;
@@ -28,6 +29,9 @@ import com.ticketingsystem.models.TokenModel;
 import com.ticketingsystem.models.UserRegisterRequestModel;
 import com.ticketingsystem.utilities.AlertFactory;
 import com.ticketingsystem.utilities.OkCommand;
+
+import java.util.Calendar;
+import java.util.regex.Pattern;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -82,7 +86,24 @@ public class ChargeAccountFragment extends Fragment implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.charge_btn : {
-                this.charge();
+                if (!isNumberValid(cardNumber, 16)) {
+                    Toast.makeText(getContext(), "Card Number should consist of 16 numbers", Toast.LENGTH_SHORT).show();
+                }
+                else if (!isCardHolderNameValid()) {
+                    Toast.makeText(getContext(), "Cardholder should consist only of letters and space", Toast.LENGTH_SHORT).show();
+                }
+                else if (!isExpireDateValid()) {
+                    Toast.makeText(getContext(), "The Card is expired", Toast.LENGTH_SHORT).show();
+                }
+                else if (!isNumberValid(securityCode, 3)) {
+                    Toast.makeText(getContext(), "Security code should consist of 3 numbers", Toast.LENGTH_SHORT).show();
+                }
+                else if (!isAmountValid()) {
+                    Toast.makeText(getContext(), "Amount should be a number > 0", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    this.charge();
+                }
                 break;
             }
         }
@@ -125,19 +146,66 @@ public class ChargeAccountFragment extends Fragment implements View.OnClickListe
         chargeAsyncTask.execute();
     }
 
-    private void updateChargeButton() {
-        if (this.cardHolderNames.getText().length() > 0 && this.cardNumber.getText().length() > 0) {
-            this.chargeButton.setEnabled(true);
-        } else {
-            this.chargeButton.setEnabled(false);
-        }
-    }
-
     private void goToHomeActivity () {
         Intent intent_home = new Intent(this.getContext(), HomeActivity.class);
         intent_home.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent_home.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK); // clears all previous activities task
         getActivity().finish(); // destroy current activity..
         startActivity(intent_home);
+    }
+
+    private Boolean isNumberValid(EditText et, int len){
+        int actualLen = et.getText().toString().length();
+        Boolean containsOnlyNumbers = et.getText().toString().matches("[0-9]+");
+
+        if(actualLen != len || !containsOnlyNumbers) {
+            return false;
+        }
+        else {
+            return  true;
+        }
+    }
+
+    private Boolean isCardHolderNameValid(){
+        String name = cardHolderNames.getText().toString();
+        CharSequence numbers = "0123456789";
+
+
+        if(name.length() == 0 || name.contains(numbers)) {
+            return false;
+        }
+        else {
+            return  true;
+        }
+    }
+
+    private Boolean isExpireDateValid(){
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+        int currentMonth = Calendar.getInstance().get(Calendar.MONTH);
+        int expYear = Integer.parseInt(expireYear.getSelectedItem().toString());
+        int expMonth = Integer.parseInt(expireMonth.getSelectedItem().toString());
+
+        if(expYear < currentYear || ((expYear == currentYear) && (expMonth < currentMonth))) {
+            return false;
+        }
+        else {
+            return  true;
+        }
+    }
+
+    private Boolean isAmountValid(){
+        int amountLen = amount.getText().toString().length();
+        //Boolean isNumberValid = amount.getText().toString().matches("[0-9]+");
+        Double amountNum = null;
+        if (amountLen > 0) {
+            amountNum = Double.parseDouble(amount.getText().toString());
+        }
+
+        if(amountLen == 0 || amountNum <= 0) {
+            return false;
+        }
+        else {
+            return  true;
+        }
     }
 }
