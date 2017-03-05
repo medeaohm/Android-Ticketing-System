@@ -26,7 +26,7 @@
         android:background="#FFFFFF"
         android:textColor="#000000"
         android:padding="12dp"
-        android:hint="Email"
+        android:hint="Username"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/l_appDescription"
@@ -35,7 +35,6 @@
         android:layout_marginTop="5dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:singleLine="false"
         android:textColorHint="#42000000"
         />
     <EditText android:id="@+id/login_password"
@@ -75,14 +74,4 @@
         android:textSize="16dp"
         android:text="Don't have an account?"
         android:layout_marginTop="120dp"/>
-    <TextView
-        android:id="@+id/login_footer"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="#FFFFFF"
-        android:gravity="center_horizontal"
-        android:text="© 2B || !2B - Android Team Project - Telerik Academy 2017"
-        />
 </RelativeLayout>

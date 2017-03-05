@@ -94,7 +94,7 @@ public class ListItemAdapter extends BaseAdapter implements View.OnClickListener
         duration = (TextView) convertView.findViewById(R.id.ticket_duration);
 
         status.setOnClickListener(this);
-        
+
         listItem = (MyTicketsListItemModel)getItem(position);
         currentId = listItem.getId();
 
@@ -184,11 +184,13 @@ public class ListItemAdapter extends BaseAdapter implements View.OnClickListener
         if (listItem.getIsActivated() && !listItem.getIsExpired()){
             status.setText("Active");
             status.setTextColor(context.getResources().getColor(R.color.green));
+            status.setAllCaps(false);
             status.setEnabled(false);
         }
         else if (listItem.getIsExpired()){
             status.setText("Expired");
             status.setTextColor(context.getResources().getColor(R.color.colorAccent));
+            status.setAllCaps(false);
             status.setEnabled(false);
         }
         else {
