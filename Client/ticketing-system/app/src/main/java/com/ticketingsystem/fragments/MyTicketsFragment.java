@@ -1,16 +1,14 @@
 package com.ticketingsystem.fragments;
 
-import android.app.ActivityManager;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
+
 import com.ticketingsystem.R;
 import com.ticketingsystem.activities.HomeActivity;
 import com.ticketingsystem.adapters.ListItemAdapter;
@@ -21,7 +19,6 @@ import com.ticketingsystem.models.TokenModel;
 import static android.content.Context.MODE_PRIVATE;
 
 public class MyTicketsFragment extends ListFragment {
-    ActivityManager manager;
     private TokenModel token;
 
     Gson gson = new Gson();
@@ -46,8 +43,6 @@ public class MyTicketsFragment extends ListFragment {
         adapter = new ListItemAdapter(getActivity(), ((HomeActivity) getActivity()).myTicketList);
         setListAdapter(adapter);
         LoadMyTickets((IMyTicket) getActivity(), adapter, token.access_token);
-        System.out.println("++++++++++++++++ list 2: " + ((HomeActivity) getActivity()).myTicketList.size());
-        System.out.println("++++++++++++++++ adapter : " + adapter.getCount());
     }
 
     @Override
@@ -59,7 +54,7 @@ public class MyTicketsFragment extends ListFragment {
 
 
     public void LoadMyTickets(IMyTicket myTickets, ListItemAdapter adapter, String authorizationToken) {
-        String loadMyTicketsUrl = "http://ticket-system-rest.apphb.com/api/tickets";
+        String loadMyTicketsUrl = getResources().getString(R.string.current_user_tickets_url);
         new LoadMyTicketsAsync(this.getContext(), myTickets , authorizationToken, loadMyTicketsUrl, adapter).execute();
     }
 }

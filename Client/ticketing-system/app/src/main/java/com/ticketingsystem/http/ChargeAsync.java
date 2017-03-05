@@ -4,8 +4,8 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 import com.google.gson.Gson;
+import com.ticketingsystem.R;
 import com.ticketingsystem.models.ChargeRequestModel;
-import com.ticketingsystem.models.UserRegisterRequestModel;
 
 import java.io.DataOutputStream;
 import java.net.HttpURLConnection;
@@ -33,7 +33,7 @@ public class ChargeAsync extends AsyncTask<Void, Void, Boolean> {
 
         URL url = null;
         try {
-            url = new URL("http://ticket-system-rest.apphb.com/api/users/charge");
+            url = new URL(context.getResources().getString(R.string.charge_url));
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }

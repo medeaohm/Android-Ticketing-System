@@ -3,7 +3,7 @@ package com.ticketingsystem.http;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import com.google.gson.Gson;
+import com.ticketingsystem.R;
 import com.ticketingsystem.models.UserLoginRequestModel;
 
 import java.io.BufferedReader;
@@ -34,7 +34,7 @@ public class LoginAsync extends AsyncTask<Void, Void, String> {
 
         URL url = null;
         try {
-            url = new URL("http://ticket-system-rest.apphb.com/token");
+            url = new URL(context.getResources().getString(R.string.login_url));
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -62,14 +62,13 @@ public class LoginAsync extends AsyncTask<Void, Void, String> {
             StringBuilder sb = new StringBuilder();
 
             BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-            System.out.println("++++++++++++++++ BR: " + br);
+
             String line = null;
             while ((line = br.readLine()) != null) {
                 sb.append(line + "\n");
             }
 
             String result = sb.toString();
-            System.out.println("++++++++++++++++ Result: " + result);
             return result;
         } catch (IOException e) {
             System.out.println("++++++++++++++++ error: " + e);
@@ -81,7 +80,6 @@ public class LoginAsync extends AsyncTask<Void, Void, String> {
 
     @Override
     protected void onPostExecute(String s) {
-        System.out.println("++++++++++++++++ Response: " + s);
         this.loginCommand.execute(s);
         super.onPostExecute(s);
     }

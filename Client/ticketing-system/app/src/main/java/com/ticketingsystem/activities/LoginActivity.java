@@ -44,9 +44,9 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     @Override
     public void onBackPressed() {
         if (exit) {
-            finish(); // finish activity
+            finish();
         } else {
-            Toast.makeText(this, "Press Back again to Exit.",
+            Toast.makeText(this, getResources().getString(R.string.exit_message),
                     Toast.LENGTH_SHORT).show();
             exit = true;
             new Handler().postDelayed(new Runnable() {
@@ -75,7 +75,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     public void onLogin() {
         URI uri = null;
         try {
-            uri = new URI("http://ticket-system-rest.apphb.com/token");
+            uri = new URI(getResources().getString(R.string.login_url));
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
@@ -91,31 +91,29 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                 token = access_token;
                 System.out.println("++++++++++++++++ Token: " + access_token);
                 connectionProgressDialog.dismiss();
-                //goToActivity(HomeActivity.class);
 
                 if (access_token != null) {
                     updateSharedPreferences();
-                    AlertFactory.createInformationAlertDialog(LoginActivity.this, "Login successful.", "Success", new OkCommand() {
+                    AlertFactory.createInformationAlertDialog(LoginActivity.this, getResources().getString(R.string.login_success), "Success", new OkCommand() {
                         @Override
                         public void execute() {
                             goToActivity(MainActivity.class);
                         }
                     }).show();
                 } else {
-                    AlertFactory.createInformationAlertDialog(LoginActivity.this, "Login failed.", "Error", null).show();
+                    AlertFactory.createInformationAlertDialog(LoginActivity.this, getResources().getString(R.string.login_error), "Error", null).show();
                 }
             }
         });
 
         connectionProgressDialog = new ProgressDialog(LoginActivity.this);
         connectionProgressDialog.setIndeterminate(true);
-        connectionProgressDialog.setMessage("Logging in...");
+        connectionProgressDialog.setMessage(getResources().getString(R.string.login_waiting));
         connectionProgressDialog.show();
         loginAsyncTask.execute();
     }
 
     private void updateSharedPreferences(){
-
         getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit()
                 .putBoolean("isUserRegistered", true).commit();
         getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit()

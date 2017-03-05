@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 import com.google.gson.Gson;
+import com.ticketingsystem.R;
 import com.ticketingsystem.models.UserRegisterRequestModel;
 
 import java.io.DataOutputStream;
@@ -30,7 +31,7 @@ public class RegisterAsync extends AsyncTask<Void, Void, Boolean> {
 
         URL url = null;
         try {
-            url = new URL("http://ticket-system-rest.apphb.com/api/account/register");
+            url = new URL(context.getResources().getString(R.string.register_url));
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }

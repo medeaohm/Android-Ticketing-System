@@ -17,7 +17,6 @@ import com.ticketingsystem.R;
 import com.ticketingsystem.http.RegisterAsync;
 import com.ticketingsystem.http.RegisterCommand;
 import com.ticketingsystem.models.UserRegisterRequestModel;
-import com.ticketingsystem.models.UserRegisterResponseModel;
 import com.ticketingsystem.utilities.AlertFactory;
 import com.ticketingsystem.utilities.OkCommand;
 
@@ -40,7 +39,6 @@ public class RegisterActivity  extends Activity implements View.OnClickListener 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         activity = this;
-
 
         setContentView(R.layout.activity_register);
 
@@ -86,7 +84,7 @@ public class RegisterActivity  extends Activity implements View.OnClickListener 
         if (exit) {
             finish(); // finish activity
         } else {
-            Toast.makeText(this, "Press Back again to Exit.",
+            Toast.makeText(this, getResources().getString(R.string.exit_message),
                     Toast.LENGTH_SHORT).show();
             exit = true;
             new Handler().postDelayed(new Runnable() {
@@ -117,21 +115,21 @@ public class RegisterActivity  extends Activity implements View.OnClickListener 
                     getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit()
                             .putBoolean("isUserRegistered", true).commit();
 
-                    AlertFactory.createInformationAlertDialog(activity, "Register successful.", "Success", new OkCommand() {
+                    AlertFactory.createInformationAlertDialog(activity, getResources().getString(R.string.register_success), "Success", new OkCommand() {
                         @Override
                         public void execute() {
                             goToLoginActivity();
                         }
                     }).show();
                 } else {
-                    AlertFactory.createInformationAlertDialog(activity, "Register failed.", "Error", null).show();
+                    AlertFactory.createInformationAlertDialog(activity, getResources().getString(R.string.register_error), "Error", null).show();
                 }
             }
         });
 
         progressDialog = new ProgressDialog(activity);
         progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Registering user...");
+        progressDialog.setMessage(getResources().getString(R.string.register_waiting));
         progressDialog.show();
         registerAsyncTask.execute();
     }

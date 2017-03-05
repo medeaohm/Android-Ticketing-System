@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -19,9 +18,6 @@ import com.ticketingsystem.R;
 import com.ticketingsystem.activities.HomeActivity;
 import com.ticketingsystem.http.BuyTicketAsync;
 import com.ticketingsystem.http.BuyTicketCommand;
-import com.ticketingsystem.http.ChargeAsync;
-import com.ticketingsystem.http.ChargeCommand;
-import com.ticketingsystem.models.ChargeRequestModel;
 import com.ticketingsystem.models.TokenModel;
 import com.ticketingsystem.utilities.AlertFactory;
 import com.ticketingsystem.utilities.OkCommand;
@@ -29,11 +25,14 @@ import com.ticketingsystem.utilities.OkCommand;
 import static android.content.Context.MODE_PRIVATE;
 
 public class BuyTicketFragment extends Fragment implements View.OnClickListener{
+
     private Spinner duration;
     private Integer hours;
     private TextView price;
     private Button buyTicketButton;
+
     private TokenModel token;
+
     private String[] durations = new String[]{
             "1 hour",
             "2 hour",
@@ -75,17 +74,24 @@ public class BuyTicketFragment extends Fragment implements View.OnClickListener{
         buyTicketButton = (Button) rootView.findViewById(R.id.ticket_buy_btn);
         buyTicketButton.setOnClickListener(this);
 
-
         return rootView;
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.ticket_buy_btn : {
+                this.buy();
+                break;
+            }
+        }
     }
 
     AdapterView.OnItemSelectedListener onItemSelectedListener =
             new AdapterView.OnItemSelectedListener(){
 
                 @Override
-                public void onItemSelected(AdapterView<?> parent, View view,
-                                           int position, long id) {
-                    String selected_duration = String.valueOf(durations[position]);
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     String calculated_price = "0.00 lv";
                     switch (position) {
                         case 0:
@@ -146,18 +152,7 @@ public class BuyTicketFragment extends Fragment implements View.OnClickListener{
 
                 @Override
                 public void onNothingSelected(AdapterView<?> parent) {}
-
             };
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.ticket_buy_btn : {
-                this.buy();
-                break;
-            }
-        }
-    }
 
     private void buy() {
 
@@ -169,21 +164,21 @@ public class BuyTicketFragment extends Fragment implements View.OnClickListener{
                 progressDialog.dismiss();
 
                 if (result) {
-                    AlertFactory.createInformationAlertDialog(getActivity(), "Ticket Bought successfully.", "Success", new OkCommand() {
+                    AlertFactory.createInformationAlertDialog(getActivity(), getResources().getString(R.string.buy_ticket_success), "Success", new OkCommand() {
                         @Override
                         public void execute() {
                             goToHomeActivity();
                         }
                     }).show();
                 } else {
-                    AlertFactory.createInformationAlertDialog(getActivity(), "An error occurred.", "Error", null).show();
+                    AlertFactory.createInformationAlertDialog(getActivity(), getResources().getString(R.string.default_error), "Error", null).show();
                 }
             }
         });
 
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Please wait...");
+        progressDialog.setMessage(getResources().getString(R.string.default_wait));
         progressDialog.show();
         buyAsyncTask.execute();
     }

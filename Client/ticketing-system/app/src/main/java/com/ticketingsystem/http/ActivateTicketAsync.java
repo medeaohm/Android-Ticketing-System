@@ -3,6 +3,8 @@ package com.ticketingsystem.http;
 import android.content.Context;
 import android.os.AsyncTask;
 
+import com.ticketingsystem.R;
+
 import java.io.DataOutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -24,13 +26,13 @@ public class ActivateTicketAsync extends AsyncTask<Void, Void, Boolean> {
 
     @Override
     protected Boolean doInBackground(Void... params) {
-        //Gson gson = new Gson();
+
         String requestBody = "{id: " + "\"" + ticketId + "\"}";
         System.out.println("++++++++++++++++ requestBody : " + requestBody);
 
         URL url = null;
         try {
-            url = new URL("http://ticket-system-rest.apphb.com/api/tickets/activate");
+            url = new URL(context.getResources().getString(R.string.activate_ticket_url));
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }

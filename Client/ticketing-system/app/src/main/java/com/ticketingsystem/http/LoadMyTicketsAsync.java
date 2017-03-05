@@ -6,7 +6,6 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Base64;
 
-import com.ticketingsystem.activities.HomeActivity;
 import com.ticketingsystem.adapters.ListItemAdapter;
 import com.ticketingsystem.models.MyTicketsListItemModel;
 
@@ -78,7 +77,6 @@ public class LoadMyTicketsAsync extends AsyncTask<String, Void, JSONArray> {
         } catch (JSONException e) {
             System.out.println("++++++++++++++++ e3 : " + e);
         }
-        System.out.println("++++++++++++++++ listOfTickets : " + listOfTickets);
         return listOfTickets;
     }
 
@@ -112,7 +110,6 @@ public class LoadMyTicketsAsync extends AsyncTask<String, Void, JSONArray> {
                         );
 
                 ticketReadyForListing.add(ticketForListing);
-                System.out.println("++++++++++++++++ ticketReadyForListing : " + ticketReadyForListing.size());
             } catch (JSONException ex) {
                 System.out.println("++++++++++++++++ e4 : " + ex);
 
@@ -122,7 +119,6 @@ public class LoadMyTicketsAsync extends AsyncTask<String, Void, JSONArray> {
         }
 
         this.myTicket.setMyTicketData(ticketReadyForListing);
-        System.out.println("++++++++++++++++ myTicket : " + this.myTicket.toString());
         this.adapter.notifyDataSetChanged();
     }
 

@@ -3,8 +3,7 @@ package com.ticketingsystem.http;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import com.google.gson.Gson;
-import com.ticketingsystem.models.ChargeRequestModel;
+import com.ticketingsystem.R;
 
 import java.io.DataOutputStream;
 import java.net.HttpURLConnection;
@@ -27,12 +26,12 @@ public class BuyTicketAsync extends AsyncTask<Void, Void, Boolean> {
 
     @Override
     protected Boolean doInBackground(Void... params) {
-        //Gson gson = new Gson();
+
         String requestBody = "{hours: " + hours.toString() + "}";
 
         URL url = null;
         try {
-            url = new URL("http://ticket-system-rest.apphb.com/api/tickets/buy");
+            url = new URL(context.getResources().getString(R.string.buy_ticket_url));
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }

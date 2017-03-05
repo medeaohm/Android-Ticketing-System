@@ -13,14 +13,13 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
+
 import com.ticketingsystem.R;
 import com.ticketingsystem.activities.MainActivity;
 import com.ticketingsystem.http.ActivateTicketAsync;
 import com.ticketingsystem.http.ActivateTicketCommand;
-import com.ticketingsystem.http.OnTicketActivatedListener;
 import com.ticketingsystem.models.MyTicketsListItemModel;
 import com.ticketingsystem.models.TokenModel;
 import com.ticketingsystem.utilities.AlertFactory;
@@ -35,6 +34,7 @@ import static android.content.Context.MODE_PRIVATE;
 public class ListItemAdapter extends BaseAdapter implements View.OnClickListener{
     Context context;
     List<MyTicketsListItemModel> items;
+
     private MyTicketsListItemModel listItem;
     private MyTicketsListItemModel currentItem;
     private ProgressDialog progressDialog;
@@ -46,10 +46,6 @@ public class ListItemAdapter extends BaseAdapter implements View.OnClickListener
     private TextView duration;
 
     private String currentId;
-    private Bitmap currentQRcode;
-    private int currentPosition;
-
-    public OnTicketActivatedListener mOnTicketActivatedListener;
 
     Gson gson = new Gson();
 
@@ -111,16 +107,11 @@ public class ListItemAdapter extends BaseAdapter implements View.OnClickListener
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.ticket_status : {
-                View parentRow = (View) v.getParent();
-                /*
-                ListView listView = (ListView) parentRow;
-                final int position = listView.getPositionForView(parentRow); */
                 this.activateTicket(currentId);
                 break;
             }
             case R.id.ticket_QR_code : {
                 loadPhoto(QRcode, currentItem.getQRCode());
-                currentPosition = 0;
             }
         }
     }
@@ -129,7 +120,6 @@ public class ListItemAdapter extends BaseAdapter implements View.OnClickListener
 
         ImageView tempImageView = imageView;
         tempImageView.setImageBitmap(bitmap);
-
 
         AlertDialog.Builder imageDialog = new AlertDialog.Builder(this.context);
         LayoutInflater inflater = (LayoutInflater) this.context.getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -182,19 +172,19 @@ public class ListItemAdapter extends BaseAdapter implements View.OnClickListener
 
     private void setTextStatus() {
         if (listItem.getIsActivated() && !listItem.getIsExpired()){
-            status.setText("Active");
+            status.setText(context.getResources().getString(R.string.ticket_status_active));
             status.setTextColor(context.getResources().getColor(R.color.green));
             status.setAllCaps(false);
             status.setEnabled(false);
         }
         else if (listItem.getIsExpired()){
-            status.setText("Expired");
+            status.setText(context.getResources().getString(R.string.ticket_status_expired));
             status.setTextColor(context.getResources().getColor(R.color.colorAccent));
             status.setAllCaps(false);
             status.setEnabled(false);
         }
         else {
-            status.setText("Activate!");
+            status.setText(context.getResources().getString(R.string.ticket_status_activate));
             status.setTextColor(context.getResources().getColor(R.color.blue));
             status.setAllCaps(true);
             status.setEnabled(true);
@@ -215,11 +205,11 @@ public class ListItemAdapter extends BaseAdapter implements View.OnClickListener
             expiresOn.setTextColor(context.getResources().getColor(R.color.green));
         }
         else if (listItem.getIsExpired()){
-            expiresOn.setText("-");
+            expiresOn.setText(context.getResources().getString(R.string.ticket_default_expire_date));
             expiresOn.setTextColor(context.getResources().getColor(R.color.colorAccent));
         }
         else {
-            expiresOn.setText("-");
+            expiresOn.setText(context.getResources().getString(R.string.ticket_default_expire_date));
             expiresOn.setTextColor(context.getResources().getColor(R.color.blue));
         }
     }

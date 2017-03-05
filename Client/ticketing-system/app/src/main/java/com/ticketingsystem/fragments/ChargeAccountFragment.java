@@ -1,12 +1,9 @@
 package com.ticketingsystem.fragments;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,19 +16,14 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.ticketingsystem.R;
 import com.ticketingsystem.activities.HomeActivity;
-import com.ticketingsystem.activities.LoginActivity;
 import com.ticketingsystem.http.ChargeAsync;
 import com.ticketingsystem.http.ChargeCommand;
-import com.ticketingsystem.http.RegisterAsync;
-import com.ticketingsystem.http.RegisterCommand;
 import com.ticketingsystem.models.ChargeRequestModel;
 import com.ticketingsystem.models.TokenModel;
-import com.ticketingsystem.models.UserRegisterRequestModel;
 import com.ticketingsystem.utilities.AlertFactory;
 import com.ticketingsystem.utilities.OkCommand;
 
 import java.util.Calendar;
-import java.util.regex.Pattern;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -87,19 +79,19 @@ public class ChargeAccountFragment extends Fragment implements View.OnClickListe
         switch (v.getId()) {
             case R.id.charge_btn : {
                 if (!isNumberValid(cardNumber, 16)) {
-                    Toast.makeText(getContext(), "Card Number should consist of 16 numbers", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getResources().getString(R.string.invalid_card_number), Toast.LENGTH_SHORT).show();
                 }
                 else if (!isCardHolderNameValid()) {
-                    Toast.makeText(getContext(), "Cardholder should consist only of letters and space", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getResources().getString(R.string.invalid_card_holder), Toast.LENGTH_SHORT).show();
                 }
                 else if (!isExpireDateValid()) {
-                    Toast.makeText(getContext(), "The Card is expired", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getResources().getString(R.string.invalid_expiration_date), Toast.LENGTH_SHORT).show();
                 }
                 else if (!isNumberValid(securityCode, 3)) {
-                    Toast.makeText(getContext(), "Security code should consist of 3 numbers", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getResources().getString(R.string.invalid_security_number), Toast.LENGTH_SHORT).show();
                 }
                 else if (!isAmountValid()) {
-                    Toast.makeText(getContext(), "Amount should be a number > 0", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getResources().getString(R.string.invalid_amount), Toast.LENGTH_SHORT).show();
                 }
                 else {
                     this.charge();
@@ -127,21 +119,21 @@ public class ChargeAccountFragment extends Fragment implements View.OnClickListe
                 progressDialog.dismiss();
 
                 if (result) {
-                    AlertFactory.createInformationAlertDialog(getActivity(), "Account Charged successfully.", "Success", new OkCommand() {
+                    AlertFactory.createInformationAlertDialog(getActivity(),getResources().getString(R.string.charge_success), "Success", new OkCommand() {
                         @Override
                         public void execute() {
                             goToHomeActivity();
                         }
                     }).show();
                 } else {
-                    AlertFactory.createInformationAlertDialog(getActivity(), "An error occurred.", "Error", null).show();
+                    AlertFactory.createInformationAlertDialog(getActivity(), getResources().getString(R.string.default_error), "Error", null).show();
                 }
             }
         });
 
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Please wait...");
+        progressDialog.setMessage(getResources().getString(R.string.default_wait));
         progressDialog.show();
         chargeAsyncTask.execute();
     }
@@ -170,7 +162,6 @@ public class ChargeAccountFragment extends Fragment implements View.OnClickListe
         String name = cardHolderNames.getText().toString();
         CharSequence numbers = "0123456789";
 
-
         if(name.length() == 0 || name.contains(numbers)) {
             return false;
         }
@@ -195,7 +186,6 @@ public class ChargeAccountFragment extends Fragment implements View.OnClickListe
 
     private Boolean isAmountValid(){
         int amountLen = amount.getText().toString().length();
-        //Boolean isNumberValid = amount.getText().toString().matches("[0-9]+");
         Double amountNum = null;
         if (amountLen > 0) {
             amountNum = Double.parseDouble(amount.getText().toString());
