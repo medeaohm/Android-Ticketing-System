@@ -94,12 +94,7 @@ public class ListItemAdapter extends BaseAdapter implements View.OnClickListener
         duration = (TextView) convertView.findViewById(R.id.ticket_duration);
 
         status.setOnClickListener(this);
-
-        currentPosition = position;
-
-        listItem = (MyTicketsListItemModel)getItem(position);
-        currentQRcode = listItem.getQRCode();
-
+        
         listItem = (MyTicketsListItemModel)getItem(position);
         currentId = listItem.getId();
 
@@ -124,8 +119,7 @@ public class ListItemAdapter extends BaseAdapter implements View.OnClickListener
                 break;
             }
             case R.id.ticket_QR_code : {
-                //Toast.makeText(this.context, "item clicked" + currentPosition, Toast.LENGTH_SHORT).show();
-                loadPhoto(QRcode, currentQRcode);
+                loadPhoto(QRcode, currentItem.getQRCode());
                 currentPosition = 0;
             }
         }
