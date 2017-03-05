@@ -1,15 +1,19 @@
 package com.ticketingsystem.adapters;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.ticketingsystem.R;
@@ -25,6 +29,7 @@ import com.ticketingsystem.utilities.OkCommand;
 import java.util.Calendar;
 import java.util.List;
 
+import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 import static android.content.Context.MODE_PRIVATE;
 
 public class ListItemAdapter extends BaseAdapter implements View.OnClickListener{
@@ -41,6 +46,8 @@ public class ListItemAdapter extends BaseAdapter implements View.OnClickListener
     private TextView duration;
 
     private String currentId;
+    private Bitmap currentQRcode;
+    private int currentPosition;
 
     public OnTicketActivatedListener mOnTicketActivatedListener;
 
@@ -71,7 +78,7 @@ public class ListItemAdapter extends BaseAdapter implements View.OnClickListener
     public View getView(int position, View convertView, ViewGroup parent) {
         if(convertView == null){
             LayoutInflater layoutInflater = (LayoutInflater)context.getSystemService(
-                    Activity.LAYOUT_INFLATER_SERVICE);
+                    LAYOUT_INFLATER_SERVICE);
 
             convertView = layoutInflater.inflate(R.layout.list_view_item, null);
 
@@ -88,10 +95,16 @@ public class ListItemAdapter extends BaseAdapter implements View.OnClickListener
 
         status.setOnClickListener(this);
 
+        currentPosition = position;
+
+        listItem = (MyTicketsListItemModel)getItem(position);
+        currentQRcode = listItem.getQRCode();
+
         listItem = (MyTicketsListItemModel)getItem(position);
         currentId = listItem.getId();
 
         QRcode.setImageBitmap(listItem.getQRCode());
+        QRcode.setOnClickListener(this);
         setTextStatus();
         setTextExpiresOn();
         setTextDuration();
@@ -110,7 +123,37 @@ public class ListItemAdapter extends BaseAdapter implements View.OnClickListener
                 this.activateTicket(currentId);
                 break;
             }
+            case R.id.ticket_QR_code : {
+                //Toast.makeText(this.context, "item clicked" + currentPosition, Toast.LENGTH_SHORT).show();
+                loadPhoto(QRcode, currentQRcode);
+                currentPosition = 0;
+            }
         }
+    }
+
+    private void loadPhoto(ImageView imageView, Bitmap bitmap) {
+
+        ImageView tempImageView = imageView;
+        tempImageView.setImageBitmap(bitmap);
+
+
+        AlertDialog.Builder imageDialog = new AlertDialog.Builder(this.context);
+        LayoutInflater inflater = (LayoutInflater) this.context.getSystemService(LAYOUT_INFLATER_SERVICE);
+
+        View layout = inflater.inflate(R.layout.qr_code, null);
+        ImageView image = (ImageView) layout.findViewById(R.id.fullimage);
+        image.setImageDrawable(tempImageView.getDrawable());
+        imageDialog.setView(layout);
+        imageDialog.setPositiveButton("Hide", new DialogInterface.OnClickListener(){
+
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+
+        });
+
+        imageDialog.create();
+        imageDialog.show();
     }
 
     private void activateTicket(String currentId) {
